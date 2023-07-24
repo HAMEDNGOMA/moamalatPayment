@@ -1,34 +1,34 @@
 class TransactionSucsses {
-  String txnDate;
-  String systemReference;
-  String networkReference;
-  String merchantReference;
-  int amount;
-  String currency;
-  String paidThrough;
-  String payerAccount;
-  String payerName;
-  String providerSchemeName;
-  String secureHash;
-  String displayData;
-  String tokenCustomerId;
-  String tokenCard;
+  String? txnDate;
+  String? systemReference;
+  String? networkReference;
+  String? merchantReference;
+  int? amount;
+  String? currency;
+  String? paidThrough;
+  String? payerAccount;
+  String? payerName;
+  String? providerSchemeName;
+  String? secureHash;
+  String? displayData;
+  String? tokenCustomerId;
+  String? tokenCard;
 
   TransactionSucsses({
-    required this.txnDate,
-    required this.systemReference,
-    required this.networkReference,
-    required this.merchantReference,
-    required this.amount,
-    required this.currency,
-    required this.paidThrough,
-    required this.payerAccount,
-    required this.payerName,
-    required this.providerSchemeName,
-    required this.secureHash,
-    required this.displayData,
-    required this.tokenCustomerId,
-    required this.tokenCard,
+    this.txnDate,
+    this.systemReference,
+    this.networkReference,
+    this.merchantReference,
+    this.amount,
+    this.currency,
+    this.paidThrough,
+    this.payerAccount,
+    this.payerName,
+    this.providerSchemeName,
+    this.secureHash,
+    this.displayData,
+    this.tokenCustomerId,
+    this.tokenCard,
   });
 
   factory TransactionSucsses.fromJson(Map<String, dynamic> json) {
@@ -51,21 +51,21 @@ class TransactionSucsses {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['TxnDate'] = this.txnDate;
-    data['SystemReference'] = this.systemReference;
-    data['NetworkReference'] = this.networkReference;
-    data['MerchantReference'] = this.merchantReference;
-    data['Amount'] = this.amount.toString();
-    data['Currency'] = this.currency;
-    data['PaidThrough'] = this.paidThrough;
-    data['PayerAccount'] = this.payerAccount;
-    data['PayerName'] = this.payerName;
-    data['ProviderSchemeName'] = this.providerSchemeName;
-    data['SecureHash'] = this.secureHash;
-    data['DisplayData'] = this.displayData;
-    data['TokenCustomerId'] = this.tokenCustomerId;
-    data['TokenCard'] = this.tokenCard;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['TxnDate'] = txnDate;
+    data['SystemReference'] = systemReference;
+    data['NetworkReference'] = networkReference;
+    data['MerchantReference'] = merchantReference;
+    data['Amount'] = amount.toString();
+    data['Currency'] = currency;
+    data['PaidThrough'] = paidThrough;
+    data['PayerAccount'] = payerAccount;
+    data['PayerName'] = payerName;
+    data['ProviderSchemeName'] = providerSchemeName;
+    data['SecureHash'] = secureHash;
+    data['DisplayData'] = displayData;
+    data['TokenCustomerId'] = tokenCustomerId;
+    data['TokenCard'] = tokenCard;
     return data;
   }
 }

@@ -155,8 +155,6 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
         controller.addJavaScriptHandler(
             handlerName: 'error',
             callback: (args) {
-              print("error from handler ");
-
               handleError(args[0]);
 
               // it will print: [1, true, [bar, 5], {foo: baz}, {bar: bar_value, baz: baz_value}]
@@ -165,10 +163,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
         controller.addJavaScriptHandler(
             handlerName: 'sucsses',
             callback: (args) {
-              print("sucsses from handler ");
-              //  handleError(args[0]);
               handleComplete(args[0]);
-              print(args);
               // it will print: [1, true, [bar, 5], {foo: baz}, {bar: bar_value, baz: baz_value}]
             });
       },
@@ -234,7 +229,6 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
         secureHash: secureHash,
       );
     } catch (e) {
-      print('Error parsing JSON: $e');
       return null;
       // Handle the error gracefully, for example, show an error message to the user
     }

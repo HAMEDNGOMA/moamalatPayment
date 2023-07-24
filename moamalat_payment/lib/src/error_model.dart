@@ -1,16 +1,16 @@
 class PaymentError {
-  final String error;
-  final String amount;
-  final String merchantReference;
-  final String dateTimeLocalTrxn;
-  final String secureHash;
+  final String? error;
+  final String? amount;
+  final String? merchantReference;
+  final String? dateTimeLocalTrxn;
+  final String? secureHash;
 
   PaymentError({
-    required this.error,
-    required this.amount,
-    required this.merchantReference,
-    required this.dateTimeLocalTrxn,
-    required this.secureHash,
+    this.error,
+    this.amount,
+    this.merchantReference,
+    this.dateTimeLocalTrxn,
+    this.secureHash,
   });
 
   factory PaymentError.fromJson(Map<String, dynamic> json) {
