@@ -5,7 +5,7 @@
 </p>
 
 
-### Moamalat_Payment
+# Moamalat_Payment
 The MoamalatPayment class is a Flutter widget that allows you to integrate the Moamalat payment gateway into your Flutter app. It provides a WebView that loads a Moamalat payment page with the transaction details to be processed. The class handles the response from the payment gateway and provides callback functions for handling successful transactions and errors. The class requires parameters such as merchantId, merchantReference, terminalId, amount, and merchantSecretKey to process the payment. The MoamalatPayment class is designed to work with Moamalat SDK in both test and production modes.
 
 ## Features
