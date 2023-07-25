@@ -5,16 +5,32 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:moamalat_payment/src/error_model.dart';
 import 'package:moamalat_payment/src/sucsses_model.dart';
 
+/// A widget that displays a Moamalat payment form and handles payment callbacks
 class MoamalatPayment extends StatefulWidget {
   final bool isTest;
+
+  /// The ID of the merchant.
   final String merchantId;
+
+  /// A unique reference for the transaction.
   final String merchantReference;
+
+  /// The ID of the terminal.
   final String terminalId;
+
+  /// The amount of the transaction.
   final String amount;
+
+  /// The secret key of the merchant.
   final String merchantSecretKey;
+
+  /// A callback function that is called when the payment is completed successfully.
   final void Function(TransactionSucsses transactionSucsses) onCompleteSucsses;
+
+  /// A callback function that is called when an error occurs during the payment process.
   final void Function(PaymentError paymentError) onError;
 
+  /// Creates a new MoamalatPayment widget.
   const MoamalatPayment({
     super.key,
     required this.merchantId,
@@ -26,6 +42,8 @@ class MoamalatPayment extends StatefulWidget {
     required this.onError,
     this.isTest = false,
   });
+
+  /// The state for the MoamalatPayment widget.
 
   @override
   State<MoamalatPayment> createState() => _MoamalatPaymentState();
@@ -43,6 +61,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     ),
   );
 
+  /// Initializes the widget's state.
   @override
   void initState() {
     super.initState();
@@ -50,6 +69,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     dateTime = getDateTimeLocalTrxnStr();
   }
 
+  /// Determines the URL of the Moamalat payment script based on the `isTest` property.
   checkTest() {
     if (widget.isTest) {
       _url = "https://tnpg.moamalat.net:6006/js/lightbox.js";
@@ -58,6 +78,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     }
   }
 
+  /// Returns the current date and time in the format required by Moamalat.
   String getDateTimeLocalTrxnStr() {
     DateTime dateTimeLocalTrxn = DateTime.now();
     int dateTimeLocalTrxnSeconds =
@@ -66,10 +87,13 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     return dateTimeLocalTrxnStr;
   }
 
+  /// Encodes the payment data as a string for use in the hash calculation.
+
   String encodeData() {
     return 'Amount=${widget.amount}&DateTimeLocalTrxn=$dateTime&MerchantId=${widget.merchantId}&MerchantReference=${widget.merchantReference}&TerminalId=${widget.terminalId}';
   }
 
+  /// Calculates the hash of the payment data using the merchant's secret key.
   String hash() {
     var key = hex2a(widget.merchantSecretKey);
 
@@ -78,6 +102,8 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     var hash = hmac.convert(utf8.encode(msg)).toString().toUpperCase();
     return '"$hash"';
   }
+
+  /// Converts a hexadecimal string to an ASCII string.
 
   String hex2a(String hex) {
     var str = '';
@@ -89,6 +115,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     return str;
   }
 
+  /// Builds the widget's UI by displaying an InAppWebView that loads the Moamalat payment form
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
@@ -156,15 +183,12 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
             handlerName: 'error',
             callback: (args) {
               handleError(args[0]);
-
-              // it will print: [1, true, [bar, 5], {foo: baz}, {bar: bar_value, baz: baz_value}]
             });
 
         controller.addJavaScriptHandler(
             handlerName: 'sucsses',
             callback: (args) {
               handleComplete(args[0]);
-              // it will print: [1, true, [bar, 5], {foo: baz}, {bar: bar_value, baz: baz_value}]
             });
       },
       onLoadStart: (controller, url) {},
@@ -196,14 +220,12 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
 
     widget.onCompleteSucsses(transaction);
 
-    // Do something with the `Transaction` instance, for example, show a success message to the user
     return transaction;
   }
 
   PaymentError? handleError(String consoleMessage) {
     try {
-      // Directly parse the JSON string into a Dart Map
-      // Directly parse the JSON string into a Dart Map
+      /// Directly parse the JSON string into a Dart Map
       Map<String, dynamic> errorObject = json.decode(consoleMessage);
 
       // Now you can access the properties like error, Amount, MerchantReference, etc.
@@ -213,7 +235,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
       String dateTimeLocalTrxn = errorObject['DateTimeLocalTrxn'];
       String secureHash = errorObject['SecureHash'];
 
-      // Create a new PaymentError instance with the parsed data and return it
+      /// Create a new PaymentError instance with the parsed data and return it
       widget.onError(PaymentError(
         error: errorMessage,
         amount: amount,
@@ -230,7 +252,8 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
       );
     } catch (e) {
       return null;
-      // Handle the error gracefully, for example, show an error message to the user
+
+      /// Handle the error gracefully, for example, show an error message to the user
     }
   }
 }

@@ -1,3 +1,4 @@
+/// A class representing an error that occurs during the Moamalat payment process.
 class PaymentError {
   final String? error;
   final String? amount;

@@ -1,5 +1,5 @@
 <p align="center">
-	<a href="https://pub.dev/packages/moamalat_payment"><img src="https://img.shields.io/badge/pub-v_0.0.2+1-blue" alt="Pub.dev Badge"></a>
+	<a href="https://pub.dev/packages/moamalat_payment"><img src="https://img.shields.io/badge/pub-v_0.0.3-blue" alt="Pub.dev Badge"></a>
 	<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="MIT License Badge"></a>
 	<a href="https://github.com/HAMEDNGOMA/moamalatPayment/tree/main/moamalat_payment"><img src="https://img.shields.io/badge/platform-flutter-blue.svg" alt="Flutter Platform Badge"></a>
 </p>

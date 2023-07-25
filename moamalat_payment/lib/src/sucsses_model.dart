@@ -1,3 +1,4 @@
+/// A class representing the data returned by a successful Moamalat transaction.
 class TransactionSucsses {
   String? txnDate;
   String? systemReference;
