@@ -1,7 +1,7 @@
 name: moamalat_payment
 description:   moamalat_payment package that allows you to integrate Moamalat payment gateway into your Flutter app .
 version: 0.0.2+1
-homepage: https://github.com/HAMEDNGOMA/moamalatPayment 
+homepage: https://github.com/HAMEDNGOMA/moamalatPayment/tree/main/moamalat_payment 
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
