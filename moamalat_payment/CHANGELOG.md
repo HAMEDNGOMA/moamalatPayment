@@ -1,3 +1,11 @@
+## 0.0.4
+
+- add .yaml docs.
+## 0.0.3
+
+- add doc comments.
+
+
 ## 0.0.2+2
 
 - Update name in Readme.
