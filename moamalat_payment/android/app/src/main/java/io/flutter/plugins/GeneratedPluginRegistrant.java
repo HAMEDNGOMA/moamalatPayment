@@ -1,7 +1,7 @@
 package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
-import com.pichillilorenzo.flutter_inappwebview.InAppWebViewFlutterPlugin;
+import com.pichillilorenzo.flutter_inappwebview_android.InAppWebViewFlutterPlugin;
 
 /**
  * Generated file. Do not edit.
@@ -11,7 +11,7 @@ public final class GeneratedPluginRegistrant {
     if (alreadyRegisteredWith(registry)) {
       return;
     }
-    InAppWebViewFlutterPlugin.registerWith(registry.registrarFor("com.pichillilorenzo.flutter_inappwebview.InAppWebViewFlutterPlugin"));
+    InAppWebViewFlutterPlugin.registerWith(registry.registrarFor("com.pichillilorenzo.flutter_inappwebview_android.InAppWebViewFlutterPlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {

@@ -55,10 +55,8 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   late String dateTime;
   late final String _url;
 
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-    android: AndroidInAppWebViewOptions(
-      useHybridComposition: true,
-    ),
+  InAppWebViewSettings options = InAppWebViewSettings(
+    useHybridComposition: true,
   );
 
   /// Initializes the widget's state.
@@ -175,7 +173,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     </body>
     </html>
       '''),
-      initialOptions: options,
+      initialSettings: options,
       onWebViewCreated: (controller) {
         this.controller = controller;
 

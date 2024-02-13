@@ -1,3 +1,7 @@
+## 0.0.5
+
+- update dependency.
+- change file name.
 ## 0.0.4
 
 - add .yaml docs.

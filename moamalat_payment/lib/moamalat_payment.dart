@@ -1,3 +1,3 @@
 library moamalat_payment;
 
-export 'src/moamalatPayment.dart';
+export 'src/moamalat_payment.dart';
