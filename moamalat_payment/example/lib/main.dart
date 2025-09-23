@@ -135,7 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
               // Merchant configuration (provided by Moamalat)
               merchantId: "YOUR_MERCHANT_ID", // Your merchant ID from Moamalat
-              merchantReference: "YOUR_MERCHANT_REFERENCE", // this will be used as your reference to the transaction you can manage this string by any format
+              merchantReference:
+                  "ORDER_${DateTime.now().millisecondsSinceEpoch}", // this will be used as your reference to the transaction you can manage this string by any format
               terminalId: "YOUR_TERMINAL_ID", // Your terminal ID from Moamalat
 
               // ========================================

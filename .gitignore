@@ -214,3 +214,4 @@ yarn.lock
 # - CHANGELOG.md (version history)
 # - LICENSE (license file)
 # - analysis_options.yaml (linting rules)
+GIT_CLEANUP_SUMMARY.md

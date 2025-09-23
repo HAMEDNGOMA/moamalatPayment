@@ -71,7 +71,7 @@ Add `moamalat_payment` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  moamalat_payment: ^0.0.3
+  moamalat_payment: ^1.0.1
 ```
 
 Then run:
@@ -130,7 +130,7 @@ class PaymentScreen extends StatelessWidget {
       body: MoamalatPayment(
         // Required parameters
         merchantId: "your_merchant_id",
-        merchantReference: "YOUR_MERCHANT_REFERENCE", // this will be used as your reference to the transaction you can manage this string by any format
+        merchantReference: "ORDER_${DateTime.now().millisecondsSinceEpoch}", // this will be used as your reference to the transaction you can manage this string by any format
         terminalId: "your_terminal_id",
         amount: "1000", // 1 LYD in dirham
         merchantSecretKey: "your_secret_key",
@@ -319,7 +319,7 @@ class InAppPurchaseScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Purchase $itemName')),
       body: MoamalatPayment(
         merchantId: "your_merchant_id",
-        merchantReference: "YOUR_MERCHANT_REFERENCE", // this will be used as your reference to the transaction you can manage this string by any format
+        merchantReference: "ORDER_${DateTime.now().millisecondsSinceEpoch}", // this will be used as your reference to the transaction you can manage this string by any format
         terminalId: "your_terminal_id",
         amount: CurrencyConverter.dinarToDirham(itemPrice),
         merchantSecretKey: "your_secret_key",
