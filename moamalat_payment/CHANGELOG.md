@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-09-23
+
+### 📝 Documentation Improvements
+
+#### **Enhanced Comments**
+- **IMPROVED**: Added clear explanation for `merchantReference` parameter
+- **IMPROVED**: Updated comments to explain transaction reference usage
+- **IMPROVED**: Better developer understanding of parameter purpose
+
+#### **Examples Updated**
+- **UPDATED**: Main.dart example with improved comments
+- **UPDATED**: README.md examples with clearer explanations
+- **UPDATED**: All merchantReference instances now have descriptive comments
+
+### 🔧 **Minor Fixes**
+- **FIXED**: Comment clarity for transaction reference management
+- **IMPROVED**: Developer experience with better parameter documentation
+
+---
+
 ## [1.0.0] - 2024-09-23
 
 ### 🎉 Major Release - Complete Package Overhaul
