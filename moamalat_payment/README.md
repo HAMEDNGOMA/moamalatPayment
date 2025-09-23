@@ -130,7 +130,7 @@ class PaymentScreen extends StatelessWidget {
       body: MoamalatPayment(
         // Required parameters
         merchantId: "your_merchant_id",
-        merchantReference: "ORDER_${DateTime.now().millisecondsSinceEpoch}",
+        merchantReference: "YOUR_MERCHANT_REFERENCE", // this will be used as your reference to the transaction you can manage this string by any format
         terminalId: "your_terminal_id",
         amount: "1000", // 1 LYD in dirham
         merchantSecretKey: "your_secret_key",
@@ -243,7 +243,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Expanded(
             child: MoamalatPayment(
               merchantId: "your_merchant_id",
-              merchantReference: widget.orderId,
+              merchantReference: widget.orderId, // this will be used as your reference to the transaction you can manage this string by any format
               terminalId: "your_terminal_id",
               amount: CurrencyConverter.dinarToDirham(widget.totalAmount),
               merchantSecretKey: "your_secret_key",
@@ -319,7 +319,7 @@ class InAppPurchaseScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Purchase $itemName')),
       body: MoamalatPayment(
         merchantId: "your_merchant_id",
-        merchantReference: "PURCHASE_${DateTime.now().millisecondsSinceEpoch}",
+        merchantReference: "YOUR_MERCHANT_REFERENCE", // this will be used as your reference to the transaction you can manage this string by any format
         terminalId: "your_terminal_id",
         amount: CurrencyConverter.dinarToDirham(itemPrice),
         merchantSecretKey: "your_secret_key",
@@ -447,7 +447,7 @@ class SecureConfig {
 
 // ✅ DO: Generate unique references
 String generateReference() {
-  return "TXN_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(9999)}";
+  return "YOUR_UNIQUE_REFERENCE"; // Generate unique reference for each transaction
 }
 
 // ❌ DON'T: Hardcode secret keys in source code
