@@ -1,0 +1,216 @@
+# ========================================
+# FLUTTER & DART GITIGNORE
+# ========================================
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/flutter_export_environment.sh
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ========================================
+# FLUTTER PACKAGE SPECIFIC
+# ========================================
+
+# Package build outputs
+**/build/
+**/dist/
+
+# Dependency lock files (should be ignored for packages, kept for apps)
+pubspec.lock
+
+# Generated files
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.dart_tool/
+
+# ========================================
+# PLATFORM SPECIFIC
+# ========================================
+
+# iOS
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Podfile.lock
+
+# Android
+**/android/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+**/android/.cxx/
+**/android/app/build/
+
+# Web
+**/web/packages/
+**/web/.packages
+
+# Windows
+**/windows/flutter/generated_plugin_registrant.cc
+**/windows/flutter/generated_plugin_registrant.h
+**/windows/flutter/generated_plugins.cmake
+
+# macOS
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/Flutter-Debug.xcconfig
+**/macos/Flutter/Flutter-Release.xcconfig
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/Podfile.lock
+
+# Linux
+**/linux/flutter/generated_plugin_registrant.cc
+**/linux/flutter/generated_plugin_registrant.h
+**/linux/flutter/generated_plugins.cmake
+
+# ========================================
+# DEVELOPMENT & TESTING
+# ========================================
+
+# Coverage reports
+coverage/
+lcov.info
+
+# Test related
+test/.test_coverage.dart
+test_driver/screenshots/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========================================
+# SECURITY & CREDENTIALS
+# ========================================
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# API keys and secrets
+**/secrets/
+**/credentials/
+**/*secret*
+**/*key*.json
+**/*credentials*.json
+
+# Firebase
+**/google-services.json
+**/GoogleService-Info.plist
+**/.firebaserc
+**/firebase.json
+
+# ========================================
+# DOCUMENTATION & ASSETS
+# ========================================
+
+# Generated documentation
+doc/api/
+
+# Large assets (uncomment if needed)
+# *.mp4
+# *.mov
+# *.avi
+# *.mkv
+
+# ========================================
+# PACKAGE MANAGER SPECIFIC
+# ========================================
+
+# NPM (if using for web assets)
+node_modules/
+package-lock.json
+
+# Yarn
+yarn.lock
+
+# ========================================
+# CUSTOM PROJECT SPECIFIC
+# ========================================
+
+# Add any project-specific ignores here
+# Example: custom build outputs, generated files, etc.
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# ========================================
+# IMPORTANT: FILES TO KEEP TRACKED
+# ========================================
+# The following files SHOULD be tracked:
+# - pubspec.yaml (package configuration)
+# - lib/ (source code)
+# - example/ (example app source)
+# - README.md (documentation)
+# - CHANGELOG.md (version history)
+# - LICENSE (license file)
+# - analysis_options.yaml (linting rules)
