@@ -28,6 +28,8 @@ flutter:
       android:
         package: com.moamalat.moamalat_payment
         pluginClass: MoamalatPaymentPlugin
+      ios:
+        pluginClass: MoamalatPaymentPlugin
 
   # To add assets to your package, add an assets section, like this:
   # assets:

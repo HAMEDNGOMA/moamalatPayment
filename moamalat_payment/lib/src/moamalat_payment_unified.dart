@@ -50,14 +50,14 @@ import 'package:moamalat_payment/src/moamalat_payment.dart' as webview_impl;
 ///
 /// ## Payment Method Selection Logic
 /// 1. If `paymentMethod` is specified, use that method
-/// 2. If on Android and SDK is available, use SDK
+/// 2. If on mobile platform (Android/iOS) and SDK is available, use SDK
 /// 3. Otherwise, fallback to WebView
 /// 4. If neither is available, show error state
 class MoamalatPaymentUnified extends StatefulWidget {
   /// Payment method to use (optional - auto-selects if not provided).
   ///
   /// When null, the widget automatically selects the best available method:
-  /// - SDK on Android (if available)
+  /// - SDK on mobile platforms (Android/iOS) if available
   /// - WebView on other platforms or as fallback
   final PaymentMethod? paymentMethod;
 
@@ -179,7 +179,7 @@ class _MoamalatPaymentUnifiedState extends State<MoamalatPaymentUnified> {
       } else {
         // Auto-select best available method
         if (PaymentMethod.sdk.isAvailable) {
-          // Check if SDK is actually configured
+          // Check if SDK is actually configured on the current platform
           final isAvailable = await MoamalatSdkService.isAvailable();
           if (isAvailable) {
             _selectedMethod = PaymentMethod.sdk;

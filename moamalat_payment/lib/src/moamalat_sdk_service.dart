@@ -4,15 +4,17 @@ import 'package:moamalat_payment/src/sucsses_model.dart';
 
 /// Native SDK service for Moamalat payment processing.
 ///
-/// This service handles communication with the native Android Moamalat SDK
-/// through platform method channels, providing a clean Dart API for payment processing.
+/// This service handles communication with the native Moamalat SDKs on both
+/// Android and iOS platforms through platform method channels, providing a
+/// clean Dart API for payment processing.
 ///
 /// ## Features
-/// - Direct integration with native Moamalat SDK
+/// - Direct integration with native Moamalat SDKs (Android & iOS)
 /// - Optimized performance compared to WebView
 /// - Native error handling and transaction callbacks
 /// - Support for both card and wallet transactions
-/// - Comprehensive logging for debugging
+/// - Platform-specific UI and user experience
+/// - Comprehensive error handling and validation
 ///
 /// ## Usage
 /// ```dart
@@ -31,13 +33,13 @@ import 'package:moamalat_payment/src/sucsses_model.dart';
 /// }
 /// ```
 class MoamalatSdkService {
-  /// Method channel for communicating with native Android code.
+  /// Method channel for communicating with native platform code (Android/iOS).
   static const MethodChannel _channel = MethodChannel('moamalat_payment/sdk');
 
   /// Starts a payment transaction using the native Moamalat SDK.
   ///
-  /// This method initiates a payment flow by calling the native Android SDK
-  /// and returns the transaction result through a Future.
+  /// This method initiates a payment flow by calling the native SDK
+  /// (Android or iOS) and returns the transaction result through a Future.
   ///
   /// **Parameters:**
   /// - [merchantId]: Unique merchant identifier provided by Moamalat
@@ -273,7 +275,7 @@ class MoamalatSdkService {
 
   /// Checks if the native SDK is available and properly configured.
   ///
-  /// This method can be used to verify that the native Android SDK
+  /// This method can be used to verify that the native SDK (Android or iOS)
   /// is properly set up before attempting payment operations.
   ///
   /// Returns `true` if the SDK is available, `false` otherwise.
@@ -285,7 +287,7 @@ class MoamalatSdkService {
   ///   final result = await MoamalatSdkService.startPayment(...);
   /// } else {
   ///   // Fallback to WebView or show error
-  ///   print('Native SDK not available');
+  ///   print('Native SDK not available for this platform');
   /// }
   /// ```
   static Future<bool> isAvailable() async {

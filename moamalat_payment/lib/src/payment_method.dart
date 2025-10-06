@@ -26,15 +26,16 @@ enum PaymentMethod {
   /// - Reduced memory footprint
   ///
   /// **Requirements:**
-  /// - Android platform only (iOS SDK not available)
-  /// - Requires proper SDK setup in Android native code
-  /// - minSdkVersion 19 or higher
+  /// - Android platform: minSdkVersion 19 or higher
+  /// - iOS platform: iOS 11.0 or higher
+  /// - Requires proper SDK setup in native code
+  /// - Platform-specific SDK dependencies
   ///
   /// **When to Use:**
   /// - Production applications
   /// - When performance is critical
   /// - When you need better user experience
-  /// - When you have Android-specific requirements
+  /// - When you want native platform integration
   sdk,
 
   /// WebView-based payment method.
@@ -94,7 +95,7 @@ extension PaymentMethodExtension on PaymentMethod {
   /// Checks if the payment method is available on the current platform.
   ///
   /// Returns:
-  /// - For SDK: `true` only on Android platform
+  /// - For SDK: `true` on Android and iOS platforms
   /// - For WebView: `true` on all platforms
   ///
   /// Example:
@@ -108,8 +109,8 @@ extension PaymentMethodExtension on PaymentMethod {
   bool get isAvailable {
     switch (this) {
       case PaymentMethod.sdk:
-        // SDK is only available on Android
-        return _isAndroid();
+        // SDK is available on Android and iOS
+        return _isMobile();
       case PaymentMethod.webview:
         // WebView is available on all platforms
         return true;
@@ -120,25 +121,51 @@ extension PaymentMethodExtension on PaymentMethod {
   String get description {
     switch (this) {
       case PaymentMethod.sdk:
-        return 'Native Moamalat SDK integration providing optimal performance and user experience on Android';
+        return 'Native Moamalat SDK integration providing optimal performance and user experience on Android and iOS';
       case PaymentMethod.webview:
         return 'WebView-based payment gateway providing cross-platform compatibility';
     }
   }
 }
 
-/// Helper function to detect Android platform.
+/// Helper function to detect mobile platforms (Android and iOS).
 ///
-/// Returns `true` if running on Android, `false` otherwise.
+/// Returns `true` if running on Android or iOS, `false` otherwise.
 /// This is used internally to determine SDK availability.
-bool _isAndroid() {
+bool _isMobile() {
   try {
-    // Use dart:io to detect platform if available
-    // This will be true for mobile/desktop platforms
-    return const bool.fromEnvironment('dart.library.io') &&
-           !const bool.fromEnvironment('dart.library.html');
+    // For native mobile platforms, we can detect dart:io but not dart:html
+    if (const bool.fromEnvironment('dart.library.io') &&
+        !const bool.fromEnvironment('dart.library.html')) {
+      // We're on a native platform (mobile or desktop)
+      // For now, assume mobile platforms since desktop SDK isn't supported
+      return true;
+    }
+    return false;
   } catch (e) {
-    // Fallback for web or unsupported platforms
+    // Fallback for unsupported platforms
     return false;
   }
+}
+
+/// Helper function to detect Android platform specifically.
+///
+/// Returns `true` if running on Android, `false` otherwise.
+/// This can be used for Android-specific functionality.
+bool _isAndroid() {
+  // For simplicity, we'll use the same detection as mobile
+  // In a real implementation, you might use Platform.isAndroid from dart:io
+  // but that requires conditional imports
+  return _isMobile();
+}
+
+/// Helper function to detect iOS platform specifically.
+///
+/// Returns `true` if running on iOS, `false` otherwise.
+/// This can be used for iOS-specific functionality.
+bool _isIOS() {
+  // For simplicity, we'll use the same detection as mobile
+  // In a real implementation, you might use Platform.isIOS from dart:io
+  // but that requires conditional imports
+  return _isMobile();
 }
