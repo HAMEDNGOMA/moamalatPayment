@@ -19,11 +19,12 @@
 
 ## 🌟 Overview
 
-**MoamalatPayment** is a powerful, feature-rich Flutter package that provides seamless integration with Libya's leading payment gateway. Built specifically for the Libyan market, it offers comprehensive payment processing capabilities with support for Libyan Dinar (LYD) transactions.
+**MoamalatPayment** is a powerful, feature-rich Flutter package that provides seamless integration with Libya's leading payment gateway. Built specifically for the Libyan market, it offers comprehensive payment processing capabilities with support for both **Native Android SDK** and **WebView** implementations, featuring intelligent auto-selection for optimal user experience.
 
 ### 🎯 **Why Choose MoamalatPayment?**
 
-- 🚀 **Multi-Platform Support**: Works flawlessly on Android, iOS, Web, and WASM
+- 🚀 **Dual Integration**: Native Android SDK + WebView support for all platforms
+- ⚡ **Auto-Selection**: Intelligently chooses the best payment method for each platform
 - 💱 **Currency Conversion**: Built-in Dinar ↔ Dirham conversion utilities
 - 🔒 **Enterprise Security**: HMAC-SHA256 encryption and secure transaction handling
 - 🌐 **Arabic Support**: Full RTL and Arabic language support
@@ -34,8 +35,9 @@
 ## ✨ Features
 
 ### 🏗️ **Core Functionality**
-- ✅ **Complete Payment Integration** - Full Moamalat gateway integration with real-time processing
-- ✅ **Multi-Platform WebView** - Native WebView on mobile, HTML iframe on web/WASM
+- ✅ **Native SDK Integration** - Direct Android SDK integration for optimal performance
+- ✅ **WebView Fallback** - Universal WebView support for all platforms
+- ✅ **Smart Method Selection** - Automatically chooses SDK or WebView based on platform
 - ✅ **Transaction Management** - Comprehensive success/error handling with detailed callbacks
 - ✅ **Environment Support** - Seamless switching between test and production modes
 
@@ -81,15 +83,33 @@ flutter pub get
 
 ### 📱 Platform Setup
 
-#### Android
-Ensure your `android/app/build.gradle` has:
+#### Android (Required for SDK Support)
+
+1. **Add SDK dependencies** to `android/app/build.gradle`:
 ```gradle
 android {
     compileSdkVersion 34
-    
+
     defaultConfig {
         minSdkVersion 19  // Minimum required
         targetSdkVersion 34
+        multiDexEnabled true
+    }
+}
+
+dependencies {
+    implementation 'com.github.payskyCompany:NUMO-PayButton-SDK-android:1.0.12'
+    implementation 'androidx.multidex:multidex:2.0.1'
+}
+```
+
+2. **Add Jitpack repository** to `android/build.gradle`:
+```gradle
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }  // Add this line
     }
 }
 ```
@@ -118,6 +138,8 @@ No additional setup required! Works out of the box with WASM support.
 
 ### ⚡ Basic Implementation
 
+#### Option 1: Auto-Select Method (Recommended)
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:moamalat_payment/moamalat_payment.dart';
@@ -127,26 +149,67 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Payment')),
-      body: MoamalatPayment(
-        // Required parameters
+      body: MoamalatPaymentUnified(
+        // Auto-selects SDK on Android, WebView elsewhere
         merchantId: "your_merchant_id",
-        merchantReference: "ORDER_${DateTime.now().millisecondsSinceEpoch}", // this will be used as your reference to the transaction you can manage this string by any format
+        merchantReference: "ORDER_${DateTime.now().millisecondsSinceEpoch}",
         terminalId: "your_terminal_id",
         amount: "1000", // 1 LYD in dirham
         merchantSecretKey: "your_secret_key",
-        
+
         // Environment
         isTest: true, // Set to false for production
-        
+
         // Localization
         loadingMessage: "الرجاء الإنتظار جاري تحويلك لبوابة الدفع",
-        
+
         // Callbacks
         onCompleteSucsses: (transaction) {
           print('Payment successful: ${transaction.systemReference}');
           // Navigate to success screen
         },
         onError: (error) {
+          print('Payment failed: ${error.error}');
+          // Handle error
+        },
+      ),
+    );
+  }
+}
+```
+
+#### Option 2: Force Specific Method
+
+```dart
+// Force SDK method (Android only)
+MoamalatPaymentUnified(
+  paymentMethod: PaymentMethod.sdk,
+  // ... other parameters
+)
+
+// Force WebView method (all platforms)
+MoamalatPaymentUnified(
+  paymentMethod: PaymentMethod.webview,
+  // ... other parameters
+)
+```
+
+#### Option 3: Original WebView Implementation
+
+```dart
+// Use the original WebView-only widget
+MoamalatPayment(
+  merchantId: "your_merchant_id",
+  merchantReference: "ORDER_${DateTime.now().millisecondsSinceEpoch}",
+  terminalId: "your_terminal_id",
+  amount: "1000", // 1 LYD in dirham
+  merchantSecretKey: "your_secret_key",
+
+  // Environment
+  isTest: true,
+
+  // Callbacks
+  onCompleteSucsses: (transaction) {
           print('Payment failed: ${error.error}');
           // Show error dialog
         },
@@ -512,22 +575,52 @@ void handlePaymentError(PaymentError error, BuildContext context) {
 
 ## 🌍 Platform Support
 
-| Platform | Status | Technology | Notes |
-|----------|--------|------------|-------|
-| **Android** | ✅ Full Support | flutter_inappwebview | Requires minSdkVersion 19+ |
-| **iOS** | ✅ Full Support | flutter_inappwebview | Requires iOS 11.0+ |
-| **Web** | ✅ Full Support | HTML iframe | Works with all browsers |
-| **WASM** | ✅ Full Support | HTML iframe | Future-ready web deployment |
-| **Desktop** | ⚠️ Limited | Error fallback | Shows platform not supported |
+| Platform | Native SDK | WebView | Auto-Selection | Notes |
+|----------|------------|---------|----------------|-------|
+| **Android** | ✅ Available | ✅ Available | ✅ Prefers SDK | Requires minSdkVersion 19+ |
+| **iOS** | ❌ Not Available | ✅ Available | ✅ Uses WebView | Requires iOS 11.0+ |
+| **Web** | ❌ Not Available | ✅ Available | ✅ Uses WebView | Works with all browsers |
+| **WASM** | ❌ Not Available | ✅ Available | ✅ Uses WebView | Future-ready web deployment |
+| **Desktop** | ❌ Not Available | ⚠️ Limited | ❌ Error fallback | Shows platform not supported |
 
 ## 🚨 Important Notes
 
-### 💰 **Amount Format**
-- ✅ **Correct**: `"1000"` (1 LYD in dirham)
-- ✅ **Correct**: `CurrencyConverter.dinarToDirham(1.0)` → `"1000"`
+### 💰 **Amount Format & Payment Methods**
+
+#### **🎯 Unified Widget (MoamalatPaymentUnified) - Recommended**
+```dart
+// ✅ ALWAYS use dirham format (string) regardless of payment method
+MoamalatPaymentUnified(
+  amount: "1000", // 1 LYD in dirham - works for both SDK and WebView
+  // amount: CurrencyConverter.dinarToDirham(1.0), // Also correct
+  // ... other parameters
+)
+```
+
+#### **📱 Direct SDK Service (MoamalatSdkService)**
+```dart
+// ✅ Use LYD amount (double) - SDK handles conversion internally
+await MoamalatSdkService.startPayment(
+  amount: 1.0, // 1 LYD as double - SDK converts to dirham automatically
+  // ... other parameters
+)
+```
+
+#### **🌐 WebView Widget (MoamalatPayment)**
+```dart
+// ✅ Use dirham format (string) - WebView expects dirham
+MoamalatPayment(
+  amount: "1000", // 1 LYD in dirham
+  // amount: CurrencyConverter.dinarToDirham(1.0), // Also correct
+  // ... other parameters
+)
+```
+
+#### **❌ Common Mistakes**
 - ❌ **Wrong**: `"1.0"` (This is dinar, not dirham)
 - ❌ **Wrong**: `"1,000"` (Contains comma)
-- ❌ **Wrong**: `1000` (Should be string, not number)
+- ❌ **Wrong**: `1000` (Should be string, not number for widgets)
+- ❌ **Wrong**: Using dirham string in SDK service (use LYD double instead)
 
 ### 🔐 **Security Requirements**
 - Store `merchantSecretKey` securely (environment variables, secure storage)

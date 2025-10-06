@@ -1,251 +1,271 @@
-/// Example demonstrating how to use the MoamalatPayment widget
-/// with and without the CurrencyConverter utility.
+/// Moamalat Payment Package Example Application
 ///
-/// This example shows two approaches:
-/// 1. Direct dirham amount (without converter)
-/// 2. Converting from dinar to dirham (with converter)
+/// This example demonstrates various ways to integrate the Moamalat payment
+/// package in Flutter applications, showcasing both SDK and WebView methods
+/// with proper currency handling and user interface design.
+///
+/// Features demonstrated:
+/// - Multiple payment method examples
+/// - Currency conversion utilities
+/// - User-friendly interfaces
+/// - Error handling and feedback
+/// - Production-ready code patterns
 
 import 'package:flutter/material.dart';
-import 'package:moamalat_payment/moamalat_payment.dart';
+import 'pages/payment_selection_page.dart';
+import 'pages/direct_sdk_example_page.dart';
+import 'pages/webview_example_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-/// Main application widget
+/// Main application widget providing the root of the example app.
+///
+/// This widget sets up the Material Design theme and navigation structure
+/// for demonstrating various Moamalat payment integration approaches.
 class MyApp extends StatelessWidget {
+  /// Creates the main application widget.
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Moamalat Payment Example',
+      title: 'Moamalat Payment Examples',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          elevation: 2,
+        ),
+        cardTheme: CardThemeData(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Moamalat Payment Example'),
+      home: const ExampleSelectionPage(),
     );
   }
 }
 
-/// Home page demonstrating MoamalatPayment usage with currency conversion examples
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+/// Example selection page for choosing different demonstration types.
+///
+/// This page serves as the main navigation hub for various payment integration
+/// examples, allowing users to explore different approaches and features.
+///
+/// Features:
+/// - Clean, Material Design interface
+/// - Clear categorization of examples
+/// - Descriptive information for each option
+/// - Easy navigation to specific demos
+class ExampleSelectionPage extends StatelessWidget {
+  /// Creates an example selection page.
+  const ExampleSelectionPage({super.key});
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    // ========================================
-    // CURRENCY CONVERSION EXAMPLES
-    // ========================================
-
-    // Example 1: Customer wants to pay 1 Libyan Dinar
-    double customerDinarAmount1 = 1.0; // Customer enters 1 LYD
-    String dirhamAmount1 = CurrencyConverter.dinarToDirham(
-        customerDinarAmount1); // Converts to "1000" dirham
-
-    // Example 2: Customer wants to pay 10.5 Libyan Dinars
-    double customerDinarAmount2 = 10.5; // Customer enters 10.5 LYD
-    String dirhamAmount2 = CurrencyConverter.dinarToDirham(
-        customerDinarAmount2); // Converts to "10500" dirham
-
-    // Example 3: Customer enters amount as string
-    String customerDinarString = "25.750"; // Customer enters "25.750" LYD
-    String dirhamAmount3 = CurrencyConverter.dinarStringToDirham(
-        customerDinarString); // Converts to "25750" dirham
-
-    // ========================================
-    // CHOOSE YOUR APPROACH
-    // ========================================
-
-    // APPROACH 1: Use CurrencyConverter (RECOMMENDED for user-friendly apps)
-    // - Customer works with familiar dinar amounts
-    // - App automatically converts to dirham
-    // - Better user experience
-    String paymentAmount =
-        dirhamAmount2; // Using converted amount (10.5 LYD = "10500" dirham)
-
-    // APPROACH 2: Direct dirham amount (if you already have dirham)
-    // - Use this if you already have the amount in dirham
-    // - No conversion needed
-    // String paymentAmount = "10500"; // Direct dirham amount
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Moamalat Payment Examples'),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          // Information panel showing conversion examples
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade50,
-              border: Border.all(color: Colors.blue.shade200),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Currency Conversion Examples:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Header section
+              Card(
+                color: Colors.blue[50],
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.payment,
+                        size: 48,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Choose an Example',
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Explore different payment integration approaches',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey[700],
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                    '• 1.0 LYD → ${CurrencyConverter.formatDirhamAmount(dirhamAmount1)}'),
-                Text(
-                    '• 10.5 LYD → ${CurrencyConverter.formatDirhamAmount(dirhamAmount2)}'),
-                Text(
-                    '• 25.750 LYD → ${CurrencyConverter.formatDirhamAmount(dirhamAmount3)}'),
-                const SizedBox(height: 8),
-                Text(
-                  'Current payment: ${CurrencyConverter.formatDinarAmount(customerDinarAmount2)} = ${CurrencyConverter.formatDirhamAmount(paymentAmount)}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
+              ),
+              const SizedBox(height: 24),
+
+              // Payment method examples
+              _buildExampleCard(
+                context,
+                title: 'Payment Methods Demo',
+                subtitle:
+                    'Unified widget with auto-selection and manual options',
+                icon: Icons.auto_awesome,
+                color: Colors.blue,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const PaymentSelectionPage(),
                   ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // WebView example
+              _buildExampleCard(
+                context,
+                title: 'WebView Implementation',
+                subtitle:
+                    'Traditional WebView with currency conversion examples',
+                icon: Icons.web,
+                color: Colors.orange,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const WebViewExamplePage(
+                      title: 'WebView Payment Example',
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Direct SDK example
+              _buildExampleCard(
+                context,
+                title: 'Direct SDK Usage',
+                subtitle: 'Advanced SDK service integration for custom flows',
+                icon: Icons.code,
+                color: Colors.green,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const DirectSdkExamplePage(),
+                  ),
+                ),
+              ),
+
+              const Spacer(),
+
+              // Footer information
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  'Each example demonstrates different aspects of the Moamalat payment package. '
+                  'Choose the one that best matches your integration needs.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds a card for each example option.
+  Widget _buildExampleCard(
+    BuildContext context, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      elevation: 3,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: color,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey[600],
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.grey[400],
+                  size: 16,
                 ),
               ],
             ),
           ),
-
-          // MoamalatPayment widget
-          Expanded(
-            child: MoamalatPayment(
-              // Arabic loading message for Libyan users
-              loadingMessage: "الرجاء الإنتظار جاري تحويلك لبوابة الدفع",
-
-              // Environment setting
-              isTest: true, // Set to false for production, true for testing
-
-              // Merchant configuration (provided by Moamalat)
-              merchantId: "YOUR_MERCHANT_ID", // Your merchant ID from Moamalat
-              merchantReference:
-                  "ORDER_${DateTime.now().millisecondsSinceEpoch}", // this will be used as your reference to the transaction you can manage this string by any format
-              terminalId: "YOUR_TERMINAL_ID", // Your terminal ID from Moamalat
-
-              // ========================================
-              // AMOUNT PARAMETER - CRITICAL!
-              // ========================================
-              // The amount MUST be in dirham (smallest currency unit)
-              //
-              // WITH CONVERTER (Recommended):
-              // - Customer enters: 10.5 LYD
-              // - You use: CurrencyConverter.dinarToDirham(10.5)
-              // - Result: "10500" (dirham)
-              //
-              // WITHOUT CONVERTER (Manual calculation):
-              // - Customer enters: 10.5 LYD
-              // - You manually calculate: 10.5 * 1000 = 10500
-              // - You pass: "10500" (dirham)
-              //
-              // WRONG EXAMPLES (DO NOT DO THIS):
-              // - amount: "10.5" ❌ (This is dinar, not dirham)
-              // - amount: "10,500" ❌ (Contains comma)
-              // - amount: 10500 ❌ (Should be string, not number)
-              //
-              amount: paymentAmount, // "10500" dirham (converted from 10.5 LYD)
-
-              // Security key (keep this secure!)
-              merchantSecretKey:
-                  "YOUR_MERCHANT_SECRET_KEY", // Replace with your actual secret key
-
-              // Payment completion callbacks
-              onCompleteSucsses: (transaction) {
-                // Payment successful!
-                print('✅ Payment successful!');
-                print('System Reference: ${transaction.systemReference}');
-                print('Amount: ${transaction.amount} dirham');
-                print(
-                    'Equivalent: ${CurrencyConverter.formatDinarAmount(CurrencyConverter.dirhamToDinar(transaction.amount.toString()))}');
-
-                // Show success message to user
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'Payment successful! Reference: ${transaction.systemReference}'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-              },
-
-              onError: (error) {
-                // Payment failed!
-                print('❌ Payment failed: ${error.error}');
-                print('Amount: ${error.amount} dirham');
-
-                // Show error message to user
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Payment failed: ${error.error}'),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
-
-// ========================================
-// CURRENCY CONVERSION GUIDE
-// ========================================
-//
-// WHEN TO USE CurrencyConverter:
-// ✅ When customers enter amounts in Libyan Dinars
-// ✅ When you want user-friendly input (e.g., "10.5 LYD")
-// ✅ When building customer-facing applications
-// ✅ When you need to display formatted amounts
-//
-// WHEN NOT TO USE CurrencyConverter:
-// ❌ When you already have the amount in dirham
-// ❌ When integrating with systems that provide dirham amounts
-// ❌ When the amount comes from APIs that return dirham values
-//
-// CONVERSION EXAMPLES:
-// 
-// WITH CurrencyConverter:
-// double userAmount = 10.5; // User enters 10.5 LYD
-// String paymentAmount = CurrencyConverter.dinarToDirham(userAmount); // "10500"
-// 
-// WITHOUT CurrencyConverter (manual):
-// double userAmount = 10.5; // User enters 10.5 LYD
-// String paymentAmount = (userAmount * 1000).toInt().toString(); // "10500"
-//
-// VALIDATION EXAMPLES:
-//
-// Validate dinar input:
-// if (CurrencyConverter.isValidDinarAmount("10.5")) {
-//   String dirham = CurrencyConverter.dinarStringToDirham("10.5");
-// }
-//
-// Validate dirham input:
-// if (CurrencyConverter.isValidDirhamAmount("10500")) {
-//   // Amount is valid for payment
-// }
-//
-// FORMATTING EXAMPLES:
-//
-// Format for display:
-// String displayDinar = CurrencyConverter.formatDinarAmount(10.5); // "10.50 LYD"
-// String displayDirham = CurrencyConverter.formatDirhamAmount("10500"); // "10,500 dirham"
-//
-// ========================================

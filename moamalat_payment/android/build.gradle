@@ -1,0 +1,75 @@
+group 'com.moamalat.moamalat_payment'
+version '1.0.1'
+
+buildscript {
+    ext.kotlin_version = '1.8.22'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace 'com.moamalat.moamalat_payment'
+    compileSdk 34
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs += ["-Xlint:-options"]
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    defaultConfig {
+        minSdk 19
+        targetSdk 34
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Moamalat Numo SDK - use compileOnly to avoid transitive dependency issues
+    compileOnly 'com.github.payskyCompany:NUMO-PayButton-SDK-android:1.0.12'
+
+    // AndroidX dependencies
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // Test dependencies
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    testImplementation 'org.mockito:mockito-core:5.0.0'
+}
+
+// Use system default Java version to avoid toolchain issues

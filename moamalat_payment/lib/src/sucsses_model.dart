@@ -4,7 +4,7 @@ class TransactionSucsses {
   String? systemReference;
   String? networkReference;
   String? merchantReference;
-  int? amount;
+  double? amount;
   String? currency;
   String? paidThrough;
   String? payerAccount;
@@ -38,7 +38,7 @@ class TransactionSucsses {
       systemReference: json['SystemReference'],
       networkReference: json['NetworkReference'],
       merchantReference: json['MerchantReference'],
-      amount: int.parse(json['Amount']),
+      amount: double.parse(json['Amount']),
       currency: json['Currency'],
       paidThrough: json['PaidThrough'],
       payerAccount: json['PayerAccount'],

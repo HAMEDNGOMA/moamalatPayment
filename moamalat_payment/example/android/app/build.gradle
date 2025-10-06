@@ -32,6 +32,11 @@ android {
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libjsc.so'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -54,6 +59,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -71,4 +77,11 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Moamalat Numo SDK - required for native SDK functionality
+    implementation('com.github.payskyCompany:NUMO-PayButton-SDK-android:1.0.12') {
+        exclude group: 'com.android.support'
+        exclude group: 'androidx.appcompat'
+    }
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

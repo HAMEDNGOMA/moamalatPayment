@@ -169,29 +169,29 @@ class MoamalatPayment extends StatefulWidget {
 }
 
 /// Private state class for [MoamalatPayment] widget.
-/// 
+///
 /// Manages the WebView lifecycle, payment flow, and transaction processing.
 class _MoamalatPaymentState extends State<MoamalatPayment> {
   /// WebView controller for managing the payment interface.
   InAppWebViewController? controller;
-  
+
   /// Placeholder for future use (currently unused).
   late String moamalatScriptWebPage;
-  
+
   /// Transaction timestamp in Unix epoch format.
   late String dateTime;
-  
+
   /// Payment gateway URL (test or production).
   late final String _url;
-  
+
   /// Loading state indicator for the payment interface.
   bool isLoading = true;
-  
+
   /// Visibility state for smooth navigation transitions.
   bool isWebViewVisible = true;
 
   /// WebView configuration optimized for payment processing.
-  /// 
+  ///
   /// Key settings:
   /// - `useHybridComposition`: Ensures proper rendering on Android
   /// - `clearCache`: Prevents cached payment data
@@ -207,7 +207,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   );
 
   /// Initializes the payment widget state.
-  /// 
+  ///
   /// Sets up the payment environment and generates transaction timestamp.
   @override
   void initState() {
@@ -217,7 +217,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Cleans up WebView resources when the widget is disposed.
-  /// 
+  ///
   /// Ensures proper cleanup to prevent memory leaks and security issues.
   /// Called automatically when the widget is removed from the widget tree.
   @override
@@ -232,7 +232,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Determines the payment gateway URL based on environment setting.
-  /// 
+  ///
   /// Sets [_url] to:
   /// - Test environment: `https://tnpg.moamalat.net:6006/js/lightbox.js`
   /// - Production environment: `https://npg.moamalat.net:6006/js/lightbox.js`
@@ -245,10 +245,10 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Generates current timestamp in Unix epoch format for transaction identification.
-  /// 
+  ///
   /// Returns a string representation of seconds since Unix epoch.
   /// This timestamp is used for transaction tracking and security hashing.
-  /// 
+  ///
   /// Example return value: `"1640995200"` (represents 2022-01-01 00:00:00 UTC)
   String getDateTimeLocalTrxnStr() {
     DateTime dateTimeLocalTrxn = DateTime.now();
@@ -259,39 +259,52 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Encodes payment parameters into a query string format for hash calculation.
-  /// 
+  ///
   /// Creates a standardized string containing all transaction parameters
   /// in the format required by Moamalat's security specification.
-  /// 
+  ///
   /// Returns a string in format:
   /// `"Amount=1000&DateTimeLocalTrxn=1640995200&MerchantId=123&MerchantReference=REF&TerminalId=456"`
-  /// 
+  ///
   /// This encoded string is used as input for HMAC-SHA256 signature generation.
   String encodeData() {
     return 'Amount=${widget.amount}&DateTimeLocalTrxn=$dateTime&MerchantId=${widget.merchantId}&MerchantReference=${widget.merchantReference}&TerminalId=${widget.terminalId}';
   }
 
   /// Generates HMAC-SHA256 signature for transaction security.
-  /// 
+  ///
   /// Creates a cryptographic signature using the merchant's secret key
   /// and encoded transaction data to ensure payment integrity.
-  /// 
+  ///
   /// Process:
-  /// 1. Converts hex-encoded secret key to bytes
+  /// 1. Converts hex-encoded secret key to bytes (or uses UTF-8 if not hex)
   /// 2. Encodes transaction data using [encodeData]
   /// 3. Generates HMAC-SHA256 hash
   /// 4. Returns uppercase hex string
-  /// 
+  ///
   /// Returns: Uppercase hex string (e.g., "A1B2C3D4E5F6...")
-  /// 
+  ///
   /// **Security Note**: This signature prevents tampering and ensures
   /// the payment request originates from an authorized merchant.
   String hash() {
-    // Convert hex key to bytes
     List<int> keyBytes = [];
     String hexKey = widget.merchantSecretKey;
-    for (int i = 0; i < hexKey.length; i += 2) {
-      keyBytes.add(int.parse(hexKey.substring(i, i + 2), radix: 16));
+
+    try {
+      // Check if the key is a valid hex string
+      if (_isValidHexString(hexKey)) {
+        // Convert hex key to bytes
+        for (int i = 0; i < hexKey.length; i += 2) {
+          String hexPair = hexKey.substring(i, i + 2);
+          keyBytes.add(int.parse(hexPair, radix: 16));
+        }
+      } else {
+        // If not hex, use UTF-8 encoding of the key
+        keyBytes = utf8.encode(hexKey);
+      }
+    } catch (e) {
+      // Fallback: use UTF-8 encoding if hex parsing fails
+      keyBytes = utf8.encode(hexKey);
     }
 
     String msg = encodeData();
@@ -300,17 +313,30 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     return hash;
   }
 
+  /// Validates if a string is a valid hexadecimal string.
+  ///
+  /// Returns true if the string contains only valid hex characters (0-9, A-F, a-f)
+  /// and has even length (required for proper byte conversion).
+  bool _isValidHexString(String str) {
+    // Must have even length for proper byte conversion
+    if (str.length % 2 != 0) return false;
+
+    // Check if all characters are valid hex
+    final hexRegex = RegExp(r'^[0-9A-Fa-f]+$');
+    return hexRegex.hasMatch(str);
+  }
+
   /// Converts a hexadecimal string to ASCII text.
-  /// 
+  ///
   /// Takes a hex-encoded string and converts each pair of hex digits
   /// to their corresponding ASCII character.
-  /// 
+  ///
   /// Example:
   /// - Input: `"48656C6C6F"`
   /// - Output: `"Hello"`
-  /// 
+  ///
   /// **Note**: Currently unused in the payment flow but kept for compatibility.
-  /// 
+  ///
   /// [hex] The hexadecimal string to convert (must have even length)
   /// Returns the decoded ASCII string
   String hex2a(String hex) {
@@ -324,16 +350,16 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Builds the payment interface using an embedded WebView.
-  /// 
+  ///
   /// Creates a full-screen WebView that loads the Moamalat payment gateway
   /// with proper navigation handling and loading states.
-  /// 
+  ///
   /// Features:
   /// - Smooth navigation transitions with [PopScope]
   /// - Loading indicator with customizable message
   /// - Automatic WebView cleanup on navigation
   /// - Responsive payment form interface
-  /// 
+  ///
   /// The WebView loads an HTML page that:
   /// 1. Includes the Moamalat Lightbox JavaScript library
   /// 2. Configures payment parameters and callbacks
@@ -359,7 +385,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
           Visibility(
             visible: isWebViewVisible,
             child: InAppWebView(
-            initialData: InAppWebViewInitialData(data: '''
+              initialData: InAppWebViewInitialData(data: '''
      <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -415,35 +441,35 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
       </body>
       </html>
         '''),
-            initialSettings: options,
-            onWebViewCreated: (controller) {
-              this.controller = controller;
+              initialSettings: options,
+              onWebViewCreated: (controller) {
+                this.controller = controller;
 
-              // Clear any existing cache and data
+                // Clear any existing cache and data
 
-              controller.addJavaScriptHandler(
-                  handlerName: 'error',
-                  callback: (args) {
-                    handleError(args[0]);
-                  });
+                controller.addJavaScriptHandler(
+                    handlerName: 'error',
+                    callback: (args) {
+                      handleError(args[0]);
+                    });
 
-              controller.addJavaScriptHandler(
-                  handlerName: 'sucsses',
-                  callback: (args) {
-                    handleComplete(args[0]);
-                  });
-            },
-            onLoadStart: (controller, url) {
-              setState(() {
-                isLoading = true;
-              });
-            },
-            onLoadStop: (controller, url) {
-              setState(() {
-                isLoading = false;
-              });
-            },
-            onProgressChanged: (controller, progress) {},
+                controller.addJavaScriptHandler(
+                    handlerName: 'sucsses',
+                    callback: (args) {
+                      handleComplete(args[0]);
+                    });
+              },
+              onLoadStart: (controller, url) {
+                setState(() {
+                  isLoading = true;
+                });
+              },
+              onLoadStop: (controller, url) {
+                setState(() {
+                  isLoading = false;
+                });
+              },
+              onProgressChanged: (controller, progress) {},
             ),
           ),
           // Loading indicator overlay
@@ -476,20 +502,20 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Handles successful payment completion from the WebView.
-  /// 
+  ///
   /// Parses the JSON response from Moamalat's payment gateway and creates
   /// a [TransactionSucsses] object with all transaction details.
-  /// 
+  ///
   /// **Response Data Includes:**
   /// - Transaction references (system, network, merchant)
   /// - Payment amount and currency
   /// - Payer information and payment method
   /// - Security hash for verification
   /// - Tokenization data (if applicable)
-  /// 
+  ///
   /// [message] JSON string containing transaction success data
   /// Returns [TransactionSucsses] object with parsed transaction details
-  /// 
+  ///
   /// **Note**: Automatically invokes [onCompleteSucsses] callback
   TransactionSucsses handleComplete(String message) {
     Map<String, dynamic> successObject = json.decode(message);
@@ -500,7 +526,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
       systemReference: successObject['SystemReference'],
       networkReference: successObject['NetworkReference'],
       merchantReference: successObject['MerchantReference'],
-      amount: int.parse(successObject['Amount']),
+      amount: double.parse(successObject['Amount']),
       currency: successObject['Currency'],
       paidThrough: successObject['PaidThrough'],
       payerAccount: successObject['PayerAccount'],
@@ -518,26 +544,26 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
   }
 
   /// Handles payment errors and failures from the WebView.
-  /// 
+  ///
   /// Parses error responses from Moamalat's payment gateway and creates
   /// a [PaymentError] object with failure details.
-  /// 
+  ///
   /// **Error Data Includes:**
   /// - Error message describing the failure
   /// - Transaction amount and reference
   /// - Timestamp of the failed transaction
   /// - Security hash for verification
-  /// 
+  ///
   /// **Common Error Scenarios:**
   /// - Invalid payment credentials
   /// - Insufficient funds
   /// - Network connectivity issues
   /// - Payment gateway timeouts
   /// - User cancellation
-  /// 
+  ///
   /// [consoleMessage] JSON string containing error details from payment gateway
   /// Returns [PaymentError] object with parsed error data, or null if parsing fails
-  /// 
+  ///
   /// **Note**: Automatically invokes [onError] callback when error is successfully parsed
   PaymentError? handleError(String consoleMessage) {
     try {
@@ -562,7 +588,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
 
       // Notify the parent widget of the error
       widget.onError(paymentError);
-      
+
       return paymentError;
     } catch (e) {
       // Return null if JSON parsing fails

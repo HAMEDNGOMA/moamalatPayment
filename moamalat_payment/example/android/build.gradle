@@ -15,6 +15,18 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.multidex:multidex:2.0.1'
+            eachDependency { details ->
+                if (details.requested.group == 'com.android.support') {
+                    details.useTarget group: 'androidx.appcompat', name: 'appcompat', version: '1.6.1'
+                }
+            }
+        }
     }
 }
 

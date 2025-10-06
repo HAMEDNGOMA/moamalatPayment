@@ -1,11 +1,11 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\Hamed Gouma\Desktop\moamalatPayment\moamalat_payment"
+export "FLUTTER_ROOT=/Users/aaminco/development/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/aaminco/Documents/GitHub/moamalatPayment/moamalat_payment"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
-export "FLUTTER_BUILD_NAME=0.0.4"
-export "FLUTTER_BUILD_NUMBER=0.0.4"
+export "FLUTTER_BUILD_NAME=1.0.1"
+export "FLUTTER_BUILD_NUMBER=1.0.1"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"
