@@ -112,7 +112,9 @@ class MoamalatPaymentUnified extends StatefulWidget {
   /// Creates a unified Moamalat payment widget.
   ///
   /// All required parameters must be provided. The payment method will be
+
   /// automatically selected unless explicitly specified.
+  final Widget? buildSdkWidget;
   const MoamalatPaymentUnified({
     super.key,
     this.paymentMethod,
@@ -125,6 +127,7 @@ class MoamalatPaymentUnified extends StatefulWidget {
     required this.onError,
     this.loadingMessage,
     this.isTest = false,
+    this.buildSdkWidget,
   });
 
   @override
@@ -254,7 +257,7 @@ class _MoamalatPaymentUnifiedState extends State<MoamalatPaymentUnified> {
     // Show payment method specific widget
     switch (_selectedMethod!) {
       case PaymentMethod.sdk:
-        return _buildSdkWidget();
+        return widget.buildSdkWidget ?? _buildSdkWidget();
       case PaymentMethod.webview:
         return _buildWebViewWidget();
     }

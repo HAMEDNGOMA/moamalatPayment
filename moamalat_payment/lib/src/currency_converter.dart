@@ -11,13 +11,13 @@
 /// ```dart
 /// // Convert from dinar to dirham string
 /// String dirhamAmount = CurrencyConverter.dinarToDirham(10.5); // "10500"
-/// 
+///
 /// // Convert from dinar string to dirham string
 /// String dirhamAmount = CurrencyConverter.dinarStringToDirham("10.500"); // "10500"
-/// 
+///
 /// // Convert from dirham back to dinar
 /// double dinarAmount = CurrencyConverter.dirhamToDinar("10500"); // 10.5
-/// 
+///
 /// // Validate dirham amount format
 /// bool isValid = CurrencyConverter.isValidDirhamAmount("10500"); // true
 /// ```
@@ -94,7 +94,7 @@ class CurrencyConverter {
   /// Throws [ArgumentError] if the parsed amount is negative
   static double dirhamToDinar(String dirhamAmountString) {
     try {
-      int dirhamAmount = int.parse(dirhamAmountString);
+      double dirhamAmount = double.parse(dirhamAmountString);
       if (dirhamAmount < 0) {
         throw ArgumentError('Dirham amount cannot be negative: $dirhamAmount');
       }
@@ -163,7 +163,8 @@ class CurrencyConverter {
   /// [dinarAmount] The amount in Libyan Dinars
   /// [showCurrency] Whether to include the currency symbol (default: true)
   /// Returns formatted string representation
-  static String formatDinarAmount(double dinarAmount, {bool showCurrency = true}) {
+  static String formatDinarAmount(double dinarAmount,
+      {bool showCurrency = true}) {
     if (dinarAmount < 0) {
       throw ArgumentError('Dinar amount cannot be negative: $dinarAmount');
     }
@@ -198,14 +199,15 @@ class CurrencyConverter {
   /// Returns formatted string representation
   ///
   /// Throws [ArgumentError] if the string is not a valid dirham amount
-  static String formatDirhamAmount(String dirhamAmountString, {bool showCurrency = true}) {
+  static String formatDirhamAmount(String dirhamAmountString,
+      {bool showCurrency = true}) {
     if (!isValidDirhamAmount(dirhamAmountString)) {
       throw ArgumentError('Invalid dirham amount: $dirhamAmountString');
     }
 
     int amount = int.parse(dirhamAmountString);
     String formatted = _addThousandsSeparator(amount.toString());
-    
+
     return showCurrency ? '$formatted dirham' : formatted;
   }
 
@@ -217,10 +219,10 @@ class CurrencyConverter {
   /// Returns formatted string with thousands separators
   static String _addThousandsSeparator(String numberString) {
     if (numberString.length <= 3) return numberString;
-    
+
     String result = '';
     int count = 0;
-    
+
     for (int i = numberString.length - 1; i >= 0; i--) {
       if (count == 3) {
         result = ',$result';
@@ -229,7 +231,7 @@ class CurrencyConverter {
       result = numberString[i] + result;
       count++;
     }
-    
+
     return result;
   }
 

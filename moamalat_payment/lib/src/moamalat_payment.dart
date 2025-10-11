@@ -225,7 +225,6 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
     // Clean up WebView resources properly
     if (controller != null) {
       controller!.stopLoading();
-      controller!.clearCache();
     }
     controller?.dispose();
     super.dispose();
@@ -456,6 +455,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
                 controller.addJavaScriptHandler(
                     handlerName: 'sucsses',
                     callback: (args) {
+                      print("This is args received $args");
                       handleComplete(args[0]);
                     });
               },
@@ -522,7 +522,7 @@ class _MoamalatPaymentState extends State<MoamalatPayment> {
 
     // Parse the response into a `Transaction` instance
     TransactionSucsses transaction = TransactionSucsses(
-      txnDate: successObject['TrxDateTime'],
+      txnDate: successObject['TxnDate'],
       systemReference: successObject['SystemReference'],
       networkReference: successObject['NetworkReference'],
       merchantReference: successObject['MerchantReference'],
